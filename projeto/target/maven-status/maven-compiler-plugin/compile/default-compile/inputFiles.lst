@@ -1,0 +1,14 @@
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/PagController.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/ProjetoApplication.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/controller/MensagemController.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/controller/PessoaController.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/controller/PessoaWebController.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/controller/ProdutoController.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/model/Pessoa.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/model/Produto.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/repository/MensagemRepository.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/repository/PessoaRepository.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/repository/ProdutoRepository.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/service/MensagemService.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/service/PessoaService.java
+/workspaces/08-Top-Especiais-III/aulaSpring/projeto/src/main/java/com/example/projeto/service/ProdutoService.java
