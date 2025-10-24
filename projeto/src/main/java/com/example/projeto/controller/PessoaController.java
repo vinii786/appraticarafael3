@@ -1,6 +1,7 @@
 package com.example.projeto.controller;
 
 import java.util.List;  
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.ResponseEntity;  
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.projeto.service.PessoaService;
 import com.example.projeto.model.Pessoa;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/pessoas")
 public class PessoaController{
