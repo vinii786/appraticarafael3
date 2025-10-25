@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-// Coloque a URL do seu backend
 const BASE_URL = 'https://verbose-fiesta-wqq4gv7p4wq396j6-8080.app.github.dev/api/pessoas';
 
 function App() {
@@ -11,7 +10,7 @@ function App() {
   const [idBusca, setIdBusca] = useState('');
   const [pessoaBuscada, setPessoaBuscada] = useState(null);
 
-  // Listar todas as pessoas
+  // Listar
   const fetchPessoas = async () => {
     try {
       const response = await fetch(BASE_URL);
@@ -26,7 +25,7 @@ function App() {
     fetchPessoas();
   }, []);
 
-  // Buscar pessoa por ID
+  // Buscar 
   const handleBuscarPorId = async () => {
     if (!idBusca) return;
     try {
@@ -43,7 +42,7 @@ function App() {
     }
   };
 
-  // Inserir nova pessoa
+  // Inserir
   const handleCadastrar = async (e) => {
     e.preventDefault();
     try {
@@ -64,7 +63,7 @@ function App() {
     }
   };
 
-  // Atualizar pessoa
+  // Atualizar 
   const handleAtualizar = async (id, novoNome, novaIdade) => {
     try {
       const response = await fetch(`${BASE_URL}/${id}`, {
@@ -78,7 +77,7 @@ function App() {
     }
   };
 
-  // Deletar pessoa
+  // Deletar
   const handleDeletar = async (id) => {
     try {
       const response = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
