@@ -95,7 +95,6 @@ function App() {
       </header>
 
       <main>
-        {/* Formulário de Cadastro */}
         <section>
           <h2>Cadastrar Nova Pessoa</h2>
           <form onSubmit={handleCadastrar}>
@@ -119,7 +118,6 @@ function App() {
 
         <hr />
 
-        {/* Buscar por ID */}
         <section>
           <h2>Buscar Pessoa por ID</h2>
           <input
@@ -140,7 +138,6 @@ function App() {
 
         <hr />
 
-        {/* Lista de Pessoas */}
         <section>
           <h2>Pessoas Cadastradas</h2>
           <table>
