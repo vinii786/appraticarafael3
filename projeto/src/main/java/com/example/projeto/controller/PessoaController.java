@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.projeto.service.PessoaService;
 import com.example.projeto.model.Pessoa;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/pessoas")
-public class PessoaController{
-    
+@CrossOrigin(origins = "*")
+public class PessoaController {
+
     private final PessoaService pessoaService;
 
     public PessoaController(PessoaService pessoaService){
@@ -26,8 +26,9 @@ public class PessoaController{
     }
 
     @GetMapping
-    public List<Pessoa> listarPessoas(){
-        return pessoaService.listarPessoas();
+    public ResponseEntity<List<Pessoa>> listarPessoas() {
+        List<Pessoa> pessoas = pessoaService.listarPessoas();
+        return ResponseEntity.ok(pessoas);
     }
 
     @GetMapping("/{id}")
@@ -38,8 +39,9 @@ public class PessoaController{
     }
 
     @PostMapping
-    public Pessoa criarPessoa(@RequestBody Pessoa pessoa){
-        return pessoaService.salvarPessoa(pessoa);
+    public ResponseEntity<Pessoa> criarPessoa(@RequestBody Pessoa pessoa){
+        Pessoa novaPessoa = pessoaService.salvarPessoa(pessoa);
+        return ResponseEntity.ok(novaPessoa);
     }
 
     @DeleteMapping("/{id}")

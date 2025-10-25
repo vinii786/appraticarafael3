@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
-import './App.css'; // O Vite já cria este ficheiro, pode personalizá-lo
+import './App.css';
 
-// COLOQUE A URL DA SUA API AQUI
-const API_URL = 'https://verbose-fiesta-wqv4gv7p4wq396j6-8080.app.github.dev/api/pessoas';
+// Coloque a URL do seu backend
+const BASE_URL = 'https://verbose-fiesta-wqq4gv7p4wq396j6-8080.app.github.dev/api/pessoas';
 
 function App() {
-  // Estado para a lista de pessoas
   const [pessoas, setPessoas] = useState([]);
-
-  // Estado para os campos do formulário
   const [nome, setNome] = useState('');
   const [idade, setIdade] = useState('');
+  const [idBusca, setIdBusca] = useState('');
+  const [pessoaBuscada, setPessoaBuscada] = useState(null);
 
-  // Função para carregar as pessoas da API (GET)
+  // Listar todas as pessoas
   const fetchPessoas = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(BASE_URL);
       const data = await response.json();
       setPessoas(data);
     } catch (error) {
@@ -23,35 +22,40 @@ function App() {
     }
   };
 
-  // Carrega a lista quando o componente é montado
   useEffect(() => {
     fetchPessoas();
   }, []);
 
-  // Função para submeter o formulário (POST)
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Impede o recarregamento da página
-
-    const novaPessoa = {
-      nome: nome,
-      idade: parseInt(idade, 10) // Converte a idade para número
-    };
-
+  // Buscar pessoa por ID
+  const handleBuscarPorId = async () => {
+    if (!idBusca) return;
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(novaPessoa),
-      });
-
+      const response = await fetch(`${BASE_URL}/${idBusca}`);
       if (response.ok) {
-        // Limpa o formulário
+        const data = await response.json();
+        setPessoaBuscada(data);
+      } else {
+        setPessoaBuscada(null);
+        alert('Pessoa não encontrada');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar pessoa por ID:', error);
+    }
+  };
+
+  // Inserir nova pessoa
+  const handleCadastrar = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, idade: parseInt(idade, 10) }),
+      });
+      if (response.ok) {
         setNome('');
         setIdade('');
-        // Recarrega a lista para mostrar a nova pessoa
-        fetchPessoas(); 
+        fetchPessoas();
       } else {
         console.error('Erro ao cadastrar pessoa');
       }
@@ -60,37 +64,78 @@ function App() {
     }
   };
 
+  // Atualizar pessoa
+  const handleAtualizar = async (id, novoNome, novaIdade) => {
+    try {
+      const response = await fetch(`${BASE_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome: novoNome, idade: parseInt(novaIdade, 10) }),
+      });
+      if (response.ok) fetchPessoas();
+    } catch (error) {
+      console.error('Erro ao atualizar pessoa:', error);
+    }
+  };
+
+  // Deletar pessoa
+  const handleDeletar = async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
+      if (response.ok) fetchPessoas();
+    } catch (error) {
+      console.error('Erro ao deletar pessoa:', error);
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Cliente React - Pessoas</h1>
+        <h1>CRUD Pessoas - React</h1>
       </header>
 
       <main>
         {/* Formulário de Cadastro */}
         <section>
           <h2>Cadastrar Nova Pessoa</h2>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Nome: </label>
-              <input
-                type="text"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label>Idade: </label>
-              <input
-                type="number"
-                value={idade}
-                onChange={(e) => setIdade(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit">Salvar</button>
+          <form onSubmit={handleCadastrar}>
+            <input
+              type="text"
+              placeholder="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+            <input
+              type="number"
+              placeholder="Idade"
+              value={idade}
+              onChange={(e) => setIdade(e.target.value)}
+              required
+            />
+            <button type="submit">Cadastrar</button>
           </form>
+        </section>
+
+        <hr />
+
+        {/* Buscar por ID */}
+        <section>
+          <h2>Buscar Pessoa por ID</h2>
+          <input
+            type="number"
+            placeholder="ID"
+            value={idBusca}
+            onChange={(e) => setIdBusca(e.target.value)}
+          />
+          <button onClick={handleBuscarPorId}>Buscar</button>
+          {pessoaBuscada && (
+            <div>
+              <p>ID: {pessoaBuscada.id}</p>
+              <p>Nome: {pessoaBuscada.nome}</p>
+              <p>Idade: {pessoaBuscada.idade}</p>
+            </div>
+          )}
         </section>
 
         <hr />
@@ -104,14 +149,27 @@ function App() {
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Idade</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
-              {pessoas.map((pessoa) => (
-                <tr key={pessoa.id}>
-                  <td>{pessoa.id}</td>
-                  <td>{pessoa.nome}</td>
-                  <td>{pessoa.idade}</td>
+              {pessoas.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+                  <td>{p.nome}</td>
+                  <td>{p.idade}</td>
+                  <td>
+                    <button onClick={() => handleDeletar(p.id)}>Deletar</button>
+                    <button
+                      onClick={() => {
+                        const novoNome = prompt('Novo nome:', p.nome);
+                        const novaIdade = prompt('Nova idade:', p.idade);
+                        if (novoNome && novaIdade) handleAtualizar(p.id, novoNome, novaIdade);
+                      }}
+                    >
+                      Editar
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
